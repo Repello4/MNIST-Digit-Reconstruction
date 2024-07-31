@@ -23,7 +23,7 @@ To set up this project, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/Repello4/MNIST-Digit-Reconstruction.git
    cd your-repo
    pip install -r requirements.txt
    ```
