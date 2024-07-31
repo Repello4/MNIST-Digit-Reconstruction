@@ -1,0 +1,2354 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{MNIST\_Image\_Reconstruction}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{MNIST Image Reconstruction}\label{mnist-image-reconstruction}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k+kn}{import} \PY{n}{PCA}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\PY{k+kn}{from} \PY{n+nn}{ipywidgets} \PY{k+kn}{import} \PY{n}{interact}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{mnist}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Load the digit image data
+MNIST}\label{load-the-digit-image-data-mnist}
+
+    Each image is a digit with image size \(28\times 28\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)} \PY{o}{=} \PY{n}{mnist}\PY{o}{.}\PY{n}{load\PYZus{}data}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Because the original data set is very large, we only use a subset of the
+data set here.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{digits\PYZus{}data} \PY{o}{=} \PY{n}{train\PYZus{}X}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5000}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{5000}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{digits\PYZus{}target} \PY{o}{=} \PY{n}{train\PYZus{}y}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5000}\PY{p}{]}
+\PY{n}{digits\PYZus{}data}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{n}{digits\PYZus{}target}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+((5000, 784), (5000,))
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{Part I: Visualize the Principal
+Components}\label{part-i-visualize-the-principal-components}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Favorite number}
+\PY{n}{num} \PY{o}{=} \PY{l+m+mi}{7}
+\PY{n}{X} \PY{o}{=} \PY{n}{digits\PYZus{}data}\PY{p}{[}\PY{n}{digits\PYZus{}target} \PY{o}{==} \PY{n}{num}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(550, 784)
+    \end{Verbatim}
+
+    Let's show the mean image of your selected digit
+\(\bar{X} = \sum_{i=1}^n X^{(i)}\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}bar} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{X\PYZus{}bar}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Visualize \(w_1\) and \(w_2\). They are both in \(\mathbb{R}^{784}\) and
+can be visualized as images.
+
+They are the eigenvectors corresponding to the largest and second
+largest eigenvalues of the covariance matrix. Equivalently, they are
+right singular vectors corresponding to the largest and second largest
+singular value of the \textbf{centered} data.
+
+Therefore, you can use SVD or eigenvalue decomposition, or use the
+\texttt{PCA} method in \texttt{scikit-learn}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{show\PYZus{}principal\PYZus{}components}\PY{p}{(}\PY{n}{k} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+
+    \PY{k}{global} \PY{n}{X}\PY{p}{,} \PY{n}{X\PYZus{}bar}
+    \PY{n}{X\PYZus{}centered} \PY{o}{=} \PY{n}{X} \PY{o}{\PYZhy{}} \PY{n}{X\PYZus{}bar}
+    \PY{n}{W} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{n}{k}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}centered}\PY{p}{)}\PY{o}{.}\PY{n}{components\PYZus{}}\PY{o}{.}\PY{n}{T}
+
+    \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{k} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{X\PYZus{}bar}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{th PC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{show\PYZus{}principal\PYZus{}components}\PY{p}{(}\PY{n}{k}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{interact}\PY{p}{(}\PY{n}{show\PYZus{}principal\PYZus{}components}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(IntSlider(value=2, description='k', max=6, min=-2), Output()), \_dom\_classes=('widget-int…
+    \end{Verbatim}
+
+    
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<function \_\_main\_\_.show\_principal\_components(k=2)>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Visualize the projection scores
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{spatial}\PY{n+nn}{.}\PY{n+nn}{distance} \PY{k+kn}{import} \PY{n}{cdist}
+
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{Z} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{X\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.25}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.75}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{Y\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.25}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.75}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{xv}\PY{p}{,} \PY{n}{yv} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{,} \PY{n}{Y\PYZus{}grid}\PY{p}{)}
+
+\PY{n}{marked\PYZus{}points} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Y\PYZus{}grid}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{midpoint\PYZus{}x} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{+} \PY{n}{X\PYZus{}grid}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+        \PY{n}{midpoint\PYZus{}y} \PY{o}{=} \PY{p}{(}\PY{n}{Y\PYZus{}grid}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{+} \PY{n}{Y\PYZus{}grid}\PY{p}{[}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+        \PY{n}{midpoint} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{midpoint\PYZus{}x}\PY{p}{,} \PY{n}{midpoint\PYZus{}y}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+
+        \PY{n}{distances} \PY{o}{=} \PY{n}{cdist}\PY{p}{(}\PY{n}{midpoint}\PY{p}{,} \PY{n}{Z}\PY{p}{)}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{closest\PYZus{}point\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{)}
+        \PY{n}{closest\PYZus{}point} \PY{o}{=} \PY{n}{Z}\PY{p}{[}\PY{n}{closest\PYZus{}point\PYZus{}idx}\PY{p}{]}
+
+        \PY{n}{marked\PYZus{}points}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{closest\PYZus{}point}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{closest\PYZus{}point}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{closest\PYZus{}point}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}grid}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axvline}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{Y\PYZus{}grid}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st PC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2nd PC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Ended up with a 4x4 plot, not a 5x5 plot. So the following plot is the
+same, but using np.linspace rather than np.quantile to make a 5x5 plot.
+I am using both plots for my answer here, since one or the other may be
+the correct interpretation of what is wanted for this problem.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{Z} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{X\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{Y\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{Z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{xv}\PY{p}{,} \PY{n}{yv} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{,} \PY{n}{Y\PYZus{}grid}\PY{p}{)}
+
+\PY{n}{marked\PYZus{}points2} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Y\PYZus{}grid}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{midpoint\PYZus{}x} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}grid}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{+} \PY{n}{X\PYZus{}grid}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+        \PY{n}{midpoint\PYZus{}y} \PY{o}{=} \PY{p}{(}\PY{n}{Y\PYZus{}grid}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{+} \PY{n}{Y\PYZus{}grid}\PY{p}{[}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+        \PY{n}{midpoint} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{midpoint\PYZus{}x}\PY{p}{,} \PY{n}{midpoint\PYZus{}y}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+
+        \PY{n}{distances} \PY{o}{=} \PY{n}{cdist}\PY{p}{(}\PY{n}{midpoint}\PY{p}{,} \PY{n}{Z}\PY{p}{)}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{closest\PYZus{}point\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{)}
+        \PY{n}{closest\PYZus{}point} \PY{o}{=} \PY{n}{Z}\PY{p}{[}\PY{n}{closest\PYZus{}point\PYZus{}idx}\PY{p}{]}
+
+        \PY{n}{marked\PYZus{}points2}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{closest\PYZus{}point}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{closest\PYZus{}point}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{closest\PYZus{}point}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}grid}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axvline}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{Y\PYZus{}grid}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st PC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2nd PC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Making a figure with 5*5 subplots, each one displays the original image
+corresponds to the marked data point in the previous plot.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}images}\PY{p}{(}\PY{n}{images}\PY{p}{,} \PY{n}{marked\PYZus{}points}\PY{p}{,} \PY{n}{ax}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{ax\PYZus{}row} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{ax}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{j}\PY{p}{,} \PY{n}{ax\PYZus{}col} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{ax\PYZus{}row}\PY{p}{)}\PY{p}{:}
+            \PY{n}{idx} \PY{o}{=} \PY{n}{i} \PY{o}{*} \PY{l+m+mi}{5} \PY{o}{+} \PY{n}{j}
+            \PY{k}{if} \PY{n}{idx} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{marked\PYZus{}points}\PY{p}{)}\PY{p}{:}
+                \PY{n}{closest\PYZus{}point\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{cdist}\PY{p}{(}\PY{p}{[}\PY{n}{marked\PYZus{}points}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{Z}\PY{p}{)}\PY{p}{)}
+                \PY{n}{ax\PYZus{}col}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{images}\PY{p}{[}\PY{n}{closest\PYZus{}point\PYZus{}idx}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}
+                \PY{n}{ax\PYZus{}col}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plot\PYZus{}images}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{marked\PYZus{}points2}\PY{p}{,} \PY{n}{ax}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Each image corresponds to the point that is closest to the middle of
+each cell. These points are marked in red. The middle is the most
+average of the data points. Each point represents an image of the number
+7. This means that each of the 25 images we see are typical for the
+number. Furthermore, each image is from a cell of the scatterplot, so
+they represent that cell's average image. The images from the last two
+columns do not have a line through the number 7 and are relatively thin.
+The first three columns have more images with the number 7 with a line
+through it and are thicker. This is especially true for the first image
+in the first row and the fourth image in the second row.
+
+    singular value of \(X\) changing with \(k\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{p}{)}
+\PY{n}{pca}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X} \PY{o}{\PYZhy{}} \PY{n}{X\PYZus{}bar}\PY{p}{)}
+\PY{n}{singular\PYZus{}values} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{singular\PYZus{}values\PYZus{}}
+\PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{singular\PYZus{}values}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{singular\PYZus{}values}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{singular value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Singular Values vs k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    For comparison, let's now add another curve. For each image in \(X\),
+Randomly shuffle the entries. The image should look like random noise
+after the shuffling.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}shuffle} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{X\PYZus{}shuffle}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{X\PYZus{}shuffle}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{X\PYZus{}shuffle}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Then add another ``singular value vs k'' curve for \texttt{X\_shuffle},
+with different color. Add a label for each curve.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pca\PYZus{}shuffled} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{p}{)}
+\PY{n}{pca\PYZus{}shuffled}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}shuffle} \PY{o}{\PYZhy{}} \PY{n}{X\PYZus{}bar}\PY{p}{)}
+\PY{n}{singular\PYZus{}values\PYZus{}shuffled} \PY{o}{=} \PY{n}{pca\PYZus{}shuffled}\PY{o}{.}\PY{n}{singular\PYZus{}values\PYZus{}}
+\PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{singular\PYZus{}values}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{singular\PYZus{}values}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Original Data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{singular\PYZus{}values\PYZus{}shuffled}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Shuffled Data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{singular value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Singular Values vs k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_27_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Kernel Density Estimation -- tuning the \texttt{bandwidth}
+
+We now apply PCA to the entire data set with \$ k = 50\$. \texttt{Z} is
+now the projection scores with shape (n, 15)
+
+\begin{itemize}
+\item
+  Compute the kernel density estimator using
+  \texttt{sklearn.neighbors.KernelDensity}. Here, let's simply use the
+  Gaussian kernel and the Euclidean distance, and explore the effect of
+  the \texttt{bandwidth} parameter. Discover the difference between
+  using two different bandwidths, 0.1 and 200.
+\item
+  Draw 16 new sample points from each fitted density using
+  \texttt{KernelDensity.sample} (for comparison purpose, please use the
+  same value for \texttt{random\_state} for both bandwidths). Of course,
+  these samples are in the space of projection scores. Use
+  \texttt{pca.inverse\_transform} to reconstruct digit images from these
+  samples. Compare the sample digits drawn from density fitted with
+  large bandwidth and small bandwidth. What are the differences? Could
+  you give some intuitive explanations why you are seeing overlapping
+  digits when \texttt{bandwidth} is large?
+\end{itemize}
+
+    After seeing the differences between the images using a bandwidth of 0.1
+and 200, those from the small bandwidth are very clear and easy to read
+while the large bandwidth is blurry. However, even with the blurriness,
+I can tell that many images for both bandwidths are the same digit. I
+think that this happened because the bandwidth is the width of the
+kernel. So when the only difference between the two is the bandwidth,
+this means that there are overlapping images because the digits
+themselves will be around the same. The wide bandwidth captures the
+overall trend of the data while the small bandwidth shows the clear
+details, which results in these overlapping images. The large bandwidth
+captures the same digits as the small bandwidth, along with images that
+capture the overall trend of the data. By looking closely between the
+images from the two bandwidths, pretty much every digit is the same, but
+the one from the large bandwidth shows the digit's general shape, with
+some blurriness.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{neighbors} \PY{k+kn}{import} \PY{n}{KernelDensity}
+
+\PY{n}{k} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{n}{k}\PY{p}{)}
+\PY{n}{Z} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{sample\PYZus{}digits}\PY{p}{(}\PY{n}{bandwidth}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{p}{:}\PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{16}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{:}
+
+    \PY{n}{kde} \PY{o}{=} \PY{n}{KernelDensity}\PY{p}{(}\PY{n}{kernel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metric} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{euclidean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{bandwidth}\PY{o}{=}\PY{n}{bandwidth}\PY{p}{)}
+    \PY{n}{kde}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Z}\PY{p}{)}
+    \PY{n}{new\PYZus{}Z} \PY{o}{=} \PY{n}{kde}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{n\PYZus{}samples}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+    \PY{n}{new\PYZus{}digits} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{inverse\PYZus{}transform}\PY{p}{(}\PY{n}{new\PYZus{}Z}\PY{p}{)}
+    \PY{k}{return} \PY{n}{new\PYZus{}digits}
+
+\PY{n}{new\PYZus{}digits\PYZus{}1} \PY{o}{=} \PY{n}{sample\PYZus{}digits}\PY{p}{(}\PY{n}{bandwidth}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{new\PYZus{}digits\PYZus{}2} \PY{o}{=} \PY{n}{sample\PYZus{}digits}\PY{p}{(}\PY{n}{bandwidth}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{show\PYZus{}digits}\PY{p}{(}\PY{n}{new\PYZus{}digits}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    new\PYZus{}digits have shape (4, 4, 784)}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{n}{subplot\PYZus{}kw}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{xticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{yticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{new\PYZus{}digits}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{show\PYZus{}digits}\PY{p}{(}\PY{n}{new\PYZus{}digits\PYZus{}1}\PY{p}{)}
+\PY{n}{show\PYZus{}digits}\PY{p}{(}\PY{n}{new\PYZus{}digits\PYZus{}2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Use \texttt{sklearn.model\_selection.GridSearchCV} to select the best
+bandwidth. Refit the model with the selected bandwidth, then draw
+another sample of 16 digits using that density. You can search for
+bandwidth within the choices \texttt{np.logspace(-1,\ 3,\ 20)}.
+
+\texttt{GridSearchCV} (by default) uses the estimator's \texttt{score}
+method to evaluation performance on the test folds. In the case of
+\texttt{KernelDensity}, \texttt{score()} gives the log-likelihood of the
+test data in the estimated density. (Here it is the likelihood under the
+Gaussian mixture model (GMM))
+
+Note that your CV-selected bandwidth, which maximizes the likelihood on
+the test folds, does not necessarily look better than the previous
+choices. Could you (intuitively) explain why?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{GridSearchCV}
+
+\PY{n}{param\PYZus{}grid} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bandwidth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{logspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{\PYZcb{}}
+\PY{n}{grid\PYZus{}search} \PY{o}{=} \PY{n}{GridSearchCV}\PY{p}{(}\PY{n}{KernelDensity}\PY{p}{(}\PY{n}{kernel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metric}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{euclidean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{param\PYZus{}grid}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\PY{n}{grid\PYZus{}search}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Z}\PY{p}{)}
+\PY{n}{cv\PYZus{}selected\PYZus{}bandwidth} \PY{o}{=} \PY{n}{grid\PYZus{}search}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bandwidth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{new\PYZus{}digits\PYZus{}cv} \PY{o}{=} \PY{n}{sample\PYZus{}digits}\PY{p}{(}\PY{n}{bandwidth}\PY{o}{=}\PY{n}{cv\PYZus{}selected\PYZus{}bandwidth}\PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{show\PYZus{}digits}\PY{p}{(}\PY{n}{new\PYZus{}digits\PYZus{}cv}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_34_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The reason why these images do not look better than those generated
+previously using a bandwidth of 0.1 is because it uses log-likelihood,
+which aims to explain how well the density function fits the training
+data. Just because a model has a higher log-likelihood does not mean
+that the visual image itself is better. This focuses on statistical fit
+rather than the visual reality.
+
+    \subsection{\texorpdfstring{Part II Select the number of clusters using
+the \emph{Gap statistic}
+(\href{hastie.su.domains/Papers/gap.pdf}{Tibshirani et al.,
+2001b}).}{Part II Select the number of clusters using the Gap statistic (Tibshirani et al., 2001b).}}\label{part-ii-select-the-number-of-clusters-using-the-gap-statistic-tibshirani-et-al.-2001b.}
+
+This paper provides a statistical procedure to formalize the heuristic
+of the ``elbow method'', by looking at the gap between the change in
+within-cluster dispersion and its ``expected'' version.
+
+The algorithm is described in detail in section 4 in the paper.
+
+\[ \widehat{k} = \arg \min_k \{k\vert \mathrm{Gap}(k) \ge \mathrm{Gap}(k + 1) - s_{k+1}\}\]
+
+    \subsubsection{(a) Implement the
+algorithm.}\label{a-implement-the-algorithm.}
+
+\begin{itemize}
+\item
+  There are two choices of reference distribution mentioned in Section
+  4. You need to implement both of them. For example, in your function
+  you can specify a parameter called \texttt{need\_PCA}, if
+  \texttt{need\_PCA==True}, draw \(B\) sample from the reference
+  distribution (a). Otherwise, draw \(B\) samples from the reference
+  distribution (b). (By default, set \(B = 50\))
+\item
+  For efficiency, you can specify an upper limit for \(k\). Namely, only
+  calculate Gap(\(k\)) for \$ 1 \le k \le\$ \texttt{kmax}. If none of
+  the considered \(k\) satisfy \$ \mathrm{Gap}(k) \ge \mathrm{Gap}(k +
+  1) - s\_\{k+1\}\$, then output a result that represents \(k>\)
+  \texttt{kmax} - 1, such as \texttt{np.inf} or \texttt{None}.
+\item
+  Besides the selected \(k\), you should also be able to output plots
+  like in Fig. 2 of the \href{hastie.su.domains/Papers/gap.pdf}{paper}.
+  Our data \texttt{X} in general has \(p \ge 2\). Instead of the scatter
+  plot (a) in Fig. 2, make a plot of
+  \(\textrm{Gap}(k) - \textrm{Gap}(k + 1) + s_{k+1}\) against \(k\), so
+  that \(\hat{k}\) will be the smallest \(k\) that gives a positive
+  value of that curve. (You can add an horizontal dashed line at
+  \(y=0\))
+\end{itemize}
+
+Some suggestions for making the plots: - Introduce a parameter named
+\texttt{need\_plot} to control whether to make the plots, or simply
+output the selected \(\hat{k}\). - Use \texttt{plt.subplots((2,2))}. If
+you want to adjust the overall figure size, you can set
+e.g.~\texttt{figsize=(10,\ 10)} in \texttt{subplot()} - To show the
+error bars like in Fig 2 (d), you can use \texttt{plt.errorbar}. -
+Specify what is your \(x\)-axis and what is your \(y\)-axis for each
+subplot. Make a title if necessary.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{cluster} \PY{k+kn}{import} \PY{n}{KMeans}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{returns the number of clusters k selected by the Gap statistic. If the selected k is larger than kmax, return None.}
+\PY{l+s+sd}{X has shape (n, p). n is the sample size. p is the number of features.}
+\PY{l+s+sd}{kmax is maximum k whose Gap(k) will be computed}
+\PY{l+s+sd}{B is the number of copies from the reference distribution}
+\PY{l+s+sd}{need\PYZus{}PCA means whether to use the reference distribution (1) or (2)}
+\PY{l+s+sd}{if need\PYZus{}plot = True, make the required plots. You can use plt.subplots().}
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}\PY{c+c1}{\PYZsh{}}
+
+\PY{k}{def} \PY{n+nf}{gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{p}{,} \PY{n}{B}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{p}{,} \PY{n}{num\PYZus{}pca} \PY{o}{=} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+
+    \PY{k}{if} \PY{n}{num\PYZus{}pca} \PY{o}{==} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{num\PYZus{}pca} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{p}\PY{p}{)} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}
+    \PY{k}{if} \PY{n}{need\PYZus{}PCA}\PY{p}{:}
+        \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components} \PY{o}{=} \PY{n}{num\PYZus{}pca}\PY{p}{)}
+        \PY{n}{X} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+    \PY{n}{gaps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{kmax}\PY{p}{)}
+    \PY{n}{s} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{kmax}\PY{p}{)}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{kmax} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{km} \PY{o}{=} \PY{n}{KMeans}\PY{p}{(}\PY{n}{n\PYZus{}clusters}\PY{o}{=}\PY{n}{k}\PY{p}{,} \PY{n}{n\PYZus{}init}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{n}{km}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+        \PY{n}{ref\PYZus{}disps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{B}\PY{p}{)}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{B}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{need\PYZus{}PCA}\PY{p}{:}
+                \PY{n}{reference} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{inverse\PYZus{}transform}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{p}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{reference} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+            \PY{n}{km\PYZus{}ref} \PY{o}{=} \PY{n}{KMeans}\PY{p}{(}\PY{n}{n\PYZus{}clusters}\PY{o}{=}\PY{n}{k}\PY{p}{,} \PY{n}{n\PYZus{}init}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+            \PY{n}{km\PYZus{}ref}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{reference}\PY{p}{)}
+            \PY{n}{ref\PYZus{}disps}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{km\PYZus{}ref}\PY{o}{.}\PY{n}{inertia\PYZus{}}
+        \PY{n}{gap} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{ref\PYZus{}disps}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{km}\PY{o}{.}\PY{n}{inertia\PYZus{}}\PY{p}{)}
+        \PY{n}{sk} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{l+m+mi}{1} \PY{o}{/} \PY{n}{B}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{ref\PYZus{}disps}\PY{p}{)}\PY{p}{)}
+        \PY{n}{gaps}\PY{p}{[}\PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{gap}
+        \PY{n}{s}\PY{p}{[}\PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{sk}
+    \PY{k}{return} \PY{n}{gaps}\PY{p}{,} \PY{n}{s}
+
+\PY{k}{def} \PY{n+nf}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{,} \PY{n}{kmax}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{,} \PY{n}{B}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{p}{:} \PY{n+nb}{bool} \PY{o}{=} \PY{k+kc}{False}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{p}{:} \PY{n+nb}{bool} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n+nb}{int}\PY{p}{:}
+    \PY{n}{gaps}\PY{p}{,} \PY{n}{s} \PY{o}{=} \PY{n}{gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{p}{,} \PY{n}{B}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{p}{)}
+    \PY{n}{k\PYZus{}selected} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{inf}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{kmax}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{gaps}\PY{p}{[}\PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{gaps}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{s}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{:}
+            \PY{n}{k\PYZus{}selected} \PY{o}{=} \PY{n}{k}
+            \PY{k}{break}
+
+    \PY{k}{if} \PY{n}{need\PYZus{}plot}\PY{p}{:}
+        \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{kmax} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{gaps}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of clusters k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gap(k)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gap Statistic for different k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{kmax}\PY{p}{)}\PY{p}{,} \PY{n}{gaps}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{gaps}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]} \PY{o}{+} \PY{n}{s}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of clusters k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gap(k) \PYZhy{} Gap(k+1) + sk+1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gap Difference}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{k\PYZus{}selected} \PY{k}{if} \PY{n}{k\PYZus{}selected} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{kmax} \PY{k}{else} \PY{k+kc}{None}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{(b) Apply the algorithm to the data containing only your
+favourite
+digit.}\label{b-apply-the-algorithm-to-the-data-containing-only-your-favourite-digit.}
+
+Use the original data as input. Then apply the algorithm, using two
+different reference distributions, respectively.
+
+    Following is some example code. Feel free to modify it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Choosing Number 7}
+\PY{n}{num} \PY{o}{=} \PY{l+m+mi}{7}
+\PY{n}{X} \PY{o}{=} \PY{n}{digits\PYZus{}data}\PY{p}{[}\PY{n}{digits\PYZus{}target} \PY{o}{==} \PY{n}{num}\PY{p}{]}
+\PY{n}{B} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(550, 784)
+    \end{Verbatim}
+
+    \subsubsection{Computing Gap Statistic with reference distribution
+generated from Singular Value
+Projections.}\label{computing-gap-statistic-with-reference-distribution-generated-from-singular-value-projections.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_43_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{Computing Gap Statistic with reference distribution
+estimated with Monte Carlo Simulations B =
+50.}\label{computing-gap-statistic-with-reference-distribution-estimated-with-monte-carlo-simulations-b-50.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_45_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    My guess of the output \(\hat{k}\) is 10, and the optimal number of
+clusters that maximizes Gap(k) is indeed 10.
+
+The minima and maxima occur at a different number of clusters for each
+reference distribution. In addition, the maximum gap distance with the
+uniform distribution is much greater than that with PCA. This is because
+the PCA method detects more subtle differences and can select a higher
+number of clusters than the uniform distribution. The PCA distribution
+does a better job at capturing the structure of complex, correlated
+data.
+
+    \subsubsection{We now apply the algorithm to the entire data set. But
+this time we will first transform the data by
+PCA.}\label{we-now-apply-the-algorithm-to-the-entire-data-set.-but-this-time-we-will-first-transform-the-data-by-pca.}
+
+For example, we first project the data to 10 principal component scores.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pca\PYZus{}complete\PYZus{}dataset} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{)}
+\PY{n}{X} \PY{o}{=} \PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(5000, 10)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{n}{B}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_49_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{n}{B}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_50_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+17
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Note that now we obtain exactly the same results when using the two
+different reference distributions. Why?
+
+    PCA normalizes the variance structure of the data set. Both the uniform
+distribution and the PCA reference distribution generate data points
+that are uniform in the feature space. The Gap statistic measures the
+difference in number of clusters in a set of data, and both reference
+distributions span the feature space uniformly. Therefore, we would
+obtain exactly the same results.
+
+    Exploring how the PCA projection dimension \(d\) affects the \(\hat k\)
+selected by the Gap statistic.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{d\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{60}\PY{p}{]}
+\PY{n}{k\PYZus{}hat\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{d\PYZus{}list}\PY{p}{:}
+    \PY{n}{pca\PYZus{}complete\PYZus{}dataset} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{n}{d}\PY{p}{)}
+    \PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{)}
+    \PY{n}{X} \PY{o}{=} \PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1000}\PY{p}{,} \PY{p}{]}\PY{p}{)}
+    \PY{n}{k\PYZus{}hat} \PY{o}{=} \PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{k\PYZus{}hat\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{k\PYZus{}hat}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PCA with }\PY{l+s+si}{\PYZob{}}\PY{n}{d}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ components. Selected k: }\PY{l+s+si}{\PYZob{}}\PY{n}{k\PYZus{}hat}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{d\PYZus{}list}\PY{p}{,} \PY{n}{k\PYZus{}hat\PYZus{}list}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}d\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{hat k\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+PCA with 1 components. Selected k: 1
+PCA with 5 components. Selected k: 7
+PCA with 10 components. Selected k: 15
+PCA with 15 components. Selected k: 18
+PCA with 20 components. Selected k: 16
+PCA with 25 components. Selected k: None
+PCA with 40 components. Selected k: None
+PCA with 60 components. Selected k: None
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_54_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    This change in \(\hat{k}\) is directly correlated with the dimension of
+the PCA projections. We understand that PCA reduces the dimensionality
+of the data set all while trying its best to maintain the variance.
+Different values of d represent different details in the data. For
+example: When \(d = 2\), much less variance is captured which can affect
+the principle components ability to represent the data. In contrast,
+when \(d = x\) where \(x\) is very close to p (dimension of the data
+set), we find that the sample clusters are much more closer to the true
+clusters; higher \(d\) implies more dimensions/date, which in turn
+explains more variance and retains more of the data's original structure
+
+    on the projection scores of your favorite digit. Again, make a plot of
+\(\hat{k}\) against \(d\).
+
+Consider \(d\) in \texttt{{[}2,\ 3,\ 5,\ 10,\ 15,\ 20,\ 25,\ 40{]}}.
+Note that we use the PCA model \emph{fitted on the entire data set}, but
+only use the projection scores of your favorite digit.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num} \PY{o}{=} \PY{l+m+mi}{7}
+\PY{n}{d\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{40}\PY{p}{]}
+\PY{n}{k\PYZus{}hat\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{d\PYZus{}list}\PY{p}{:}
+    \PY{n}{pca\PYZus{}complete\PYZus{}dataset} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{n}{d}\PY{p}{)}
+    \PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{)}
+    \PY{n}{X} \PY{o}{=} \PY{n}{pca\PYZus{}complete\PYZus{}dataset}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{digits\PYZus{}data}\PY{p}{[}\PY{n}{digits\PYZus{}target} \PY{o}{==} \PY{n}{num}\PY{p}{,} \PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} reduce the sample size for efficiency}
+    \PY{n}{k\PYZus{}hat} \PY{o}{=} \PY{n}{select\PYZus{}k\PYZus{}by\PYZus{}Gap\PYZus{}statistic}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{kmax}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{B}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{need\PYZus{}PCA}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{need\PYZus{}plot}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{k\PYZus{}hat\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{k\PYZus{}hat}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PCA with }\PY{l+s+si}{\PYZob{}}\PY{n}{d}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ components. Selected k: }\PY{l+s+si}{\PYZob{}}\PY{n}{k\PYZus{}hat}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{d\PYZus{}list}\PY{p}{,} \PY{n}{k\PYZus{}hat\PYZus{}list}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}d\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{hat k\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+PCA with 2 components. Selected k: 2
+PCA with 3 components. Selected k: 4
+PCA with 5 components. Selected k: 5
+PCA with 10 components. Selected k: 9
+PCA with 15 components. Selected k: 13
+PCA with 20 components. Selected k: 16
+PCA with 25 components. Selected k: 18
+PCA with 40 components. Selected k: 14
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{MNIST_Image_Reconstruction_files/MNIST_Image_Reconstruction_57_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Intuitively explain why you see \(\hat{k}\) change with \(d\) in this
+way.
+
+    Similar to my response above, the more variance we have in a data set,
+the more we can explain and differentiate. The reason for more
+variability in clusters is the reduction of dimensionality decrease
+towards the true dimension \(p\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}sudo\PY{+w}{ }apt\PYZhy{}get\PY{+w}{ }install\PY{+w}{ }texlive\PYZhy{}xetex\PY{+w}{ }texlive\PYZhy{}fonts\PYZhy{}recommended\PY{+w}{ }texlive\PYZhy{}plain\PYZhy{}generic
+\PY{o}{!}jupyter\PY{+w}{ }nbconvert\PY{+w}{ }\PYZhy{}\PYZhy{}to\PY{+w}{ }pdf\PY{+w}{ }/content/Team\PYZus{}18\PYZus{}Final\PYZus{}Project\PYZus{}STA142B\PYZus{}S24.ipynb
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Reading package lists{\ldots} Done
+Building dependency tree{\ldots} Done
+Reading state information{\ldots} Done
+The following additional packages will be installed:
+  dvisvgm fonts-droid-fallback fonts-lato fonts-lmodern fonts-noto-mono
+  fonts-texgyre fonts-urw-base35 libapache-pom-java libcommons-logging-java
+  libcommons-parent-java libfontbox-java libfontenc1 libgs9 libgs9-common
+  libidn12 libijs-0.35 libjbig2dec0 libkpathsea6 libpdfbox-java libptexenc1
+  libruby3.0 libsynctex2 libteckit0 libtexlua53 libtexluajit2 libwoff1
+  libzzip-0-13 lmodern poppler-data preview-latex-style rake ruby
+  ruby-net-telnet ruby-rubygems ruby-webrick ruby-xmlrpc ruby3.0
+  rubygems-integration t1utils teckit tex-common tex-gyre texlive-base
+  texlive-binaries texlive-latex-base texlive-latex-extra
+  texlive-latex-recommended texlive-pictures tipa xfonts-encodings
+  xfonts-utils
+Suggested packages:
+  fonts-noto fonts-freefont-otf | fonts-freefont-ttf libavalon-framework-java
+  libcommons-logging-java-doc libexcalibur-logkit-java liblog4j1.2-java
+  poppler-utils ghostscript fonts-japanese-mincho | fonts-ipafont-mincho
+  fonts-japanese-gothic | fonts-ipafont-gothic fonts-arphic-ukai
+  fonts-arphic-uming fonts-nanum ri ruby-dev bundler debhelper gv
+  | postscript-viewer perl-tk xpdf | pdf-viewer xzdec
+  texlive-fonts-recommended-doc texlive-latex-base-doc python3-pygments
+  icc-profiles libfile-which-perl libspreadsheet-parseexcel-perl
+  texlive-latex-extra-doc texlive-latex-recommended-doc texlive-luatex
+  texlive-pstricks dot2tex prerex texlive-pictures-doc vprerex
+  default-jre-headless tipa-doc
+The following NEW packages will be installed:
+  dvisvgm fonts-droid-fallback fonts-lato fonts-lmodern fonts-noto-mono
+  fonts-texgyre fonts-urw-base35 libapache-pom-java libcommons-logging-java
+  libcommons-parent-java libfontbox-java libfontenc1 libgs9 libgs9-common
+  libidn12 libijs-0.35 libjbig2dec0 libkpathsea6 libpdfbox-java libptexenc1
+  libruby3.0 libsynctex2 libteckit0 libtexlua53 libtexluajit2 libwoff1
+  libzzip-0-13 lmodern poppler-data preview-latex-style rake ruby
+  ruby-net-telnet ruby-rubygems ruby-webrick ruby-xmlrpc ruby3.0
+  rubygems-integration t1utils teckit tex-common tex-gyre texlive-base
+  texlive-binaries texlive-fonts-recommended texlive-latex-base
+  texlive-latex-extra texlive-latex-recommended texlive-pictures
+  texlive-plain-generic texlive-xetex tipa xfonts-encodings xfonts-utils
+0 upgraded, 54 newly installed, 0 to remove and 45 not upgraded.
+Need to get 182 MB of archives.
+After this operation, 571 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-droid-fallback all
+1:6.0.1r16-1.1build1 [1,805 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-lato all 2.0-2.1
+[2,696 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 poppler-data all
+0.4.11-1 [2,171 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/universe amd64 tex-common all 6.17
+[33.7 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-urw-base35 all
+20200910-1 [6,367 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgs9-common
+all 9.55.0\textasciitilde{}dfsg1-0ubuntu5.6 [751 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libidn12 amd64
+1.38-4ubuntu1 [60.0 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 libijs-0.35 amd64
+0.35-15build2 [16.5 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjbig2dec0 amd64
+0.19-3build2 [64.7 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgs9 amd64
+9.55.0\textasciitilde{}dfsg1-0ubuntu5.6 [5,031 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libkpathsea6
+amd64 2021.20210626.59705-1ubuntu0.2 [60.4 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy/main amd64 libwoff1 amd64
+1.0.2-1build4 [45.2 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy/universe amd64 dvisvgm amd64
+2.13.1-1 [1,221 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-lmodern all
+2.004.5-6.1 [4,532 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-noto-mono all
+20201225-1build1 [397 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy/universe amd64 fonts-texgyre all
+20180621-3.1 [10.2 MB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libapache-pom-java
+all 18-1 [4,720 B]
+Get:18 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libcommons-parent-
+java all 43-1 [10.8 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libcommons-logging-
+java all 1.2-2 [60.3 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfontenc1 amd64
+1:1.1.4-1build3 [14.7 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libptexenc1
+amd64 2021.20210626.59705-1ubuntu0.2 [39.1 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy/main amd64 rubygems-integration
+all 1.18 [5,336 B]
+Get:23 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 ruby3.0 amd64
+3.0.2-7ubuntu2.5 [50.1 kB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy/main amd64 ruby-rubygems all
+3.3.5-2 [228 kB]
+Get:25 http://archive.ubuntu.com/ubuntu jammy/main amd64 ruby amd64 1:3.0\textasciitilde{}exp1
+[5,100 B]
+Get:26 http://archive.ubuntu.com/ubuntu jammy/main amd64 rake all 13.0.6-2 [61.7
+kB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy/main amd64 ruby-net-telnet all
+0.1.1-2 [12.6 kB]
+Get:28 http://archive.ubuntu.com/ubuntu jammy/universe amd64 ruby-webrick all
+1.7.0-3 [51.8 kB]
+Get:29 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 ruby-xmlrpc all
+0.3.2-1ubuntu0.1 [24.9 kB]
+Get:30 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libruby3.0
+amd64 3.0.2-7ubuntu2.5 [5,113 kB]
+Get:31 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsynctex2
+amd64 2021.20210626.59705-1ubuntu0.2 [55.6 kB]
+Get:32 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libteckit0 amd64
+2.5.11+ds1-1 [421 kB]
+Get:33 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtexlua53
+amd64 2021.20210626.59705-1ubuntu0.2 [120 kB]
+Get:34 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtexluajit2
+amd64 2021.20210626.59705-1ubuntu0.2 [267 kB]
+Get:35 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libzzip-0-13 amd64
+0.13.72+dfsg.1-1.1 [27.0 kB]
+Get:36 http://archive.ubuntu.com/ubuntu jammy/main amd64 xfonts-encodings all
+1:1.0.5-0ubuntu2 [578 kB]
+Get:37 http://archive.ubuntu.com/ubuntu jammy/main amd64 xfonts-utils amd64
+1:7.7+6build2 [94.6 kB]
+Get:38 http://archive.ubuntu.com/ubuntu jammy/universe amd64 lmodern all
+2.004.5-6.1 [9,471 kB]
+Get:39 http://archive.ubuntu.com/ubuntu jammy/universe amd64 preview-latex-style
+all 12.2-1ubuntu1 [185 kB]
+Get:40 http://archive.ubuntu.com/ubuntu jammy/main amd64 t1utils amd64
+1.41-4build2 [61.3 kB]
+Get:41 http://archive.ubuntu.com/ubuntu jammy/universe amd64 teckit amd64
+2.5.11+ds1-1 [699 kB]
+Get:42 http://archive.ubuntu.com/ubuntu jammy/universe amd64 tex-gyre all
+20180621-3.1 [6,209 kB]
+Get:43 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 texlive-
+binaries amd64 2021.20210626.59705-1ubuntu0.2 [9,860 kB]
+Get:44 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-base all
+2021.20220204-1 [21.0 MB]
+Get:45 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-fonts-
+recommended all 2021.20220204-1 [4,972 kB]
+Get:46 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-latex-base
+all 2021.20220204-1 [1,128 kB]
+Get:47 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libfontbox-java all
+1:1.8.16-2 [207 kB]
+Get:48 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libpdfbox-java all
+1:1.8.16-2 [5,199 kB]
+Get:49 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-latex-
+recommended all 2021.20220204-1 [14.4 MB]
+Get:50 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-pictures
+all 2021.20220204-1 [8,720 kB]
+Get:51 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-latex-extra
+all 2021.20220204-1 [13.9 MB]
+Get:52 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-plain-
+generic all 2021.20220204-1 [27.5 MB]
+Get:53 http://archive.ubuntu.com/ubuntu jammy/universe amd64 tipa all 2:1.3-21
+[2,967 kB]
+Get:54 http://archive.ubuntu.com/ubuntu jammy/universe amd64 texlive-xetex all
+2021.20220204-1 [12.4 MB]
+Fetched 182 MB in 3min 1s (1,003 kB/s)
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based
+frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78,
+<> line 54.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+Selecting previously unselected package fonts-droid-fallback.
+(Reading database {\ldots} 121913 files and directories currently installed.)
+Preparing to unpack {\ldots}/00-fonts-droid-fallback\_1\%3a6.0.1r16-1.1build1\_all.deb
+{\ldots}
+Unpacking fonts-droid-fallback (1:6.0.1r16-1.1build1) {\ldots}
+Selecting previously unselected package fonts-lato.
+Preparing to unpack {\ldots}/01-fonts-lato\_2.0-2.1\_all.deb {\ldots}
+Unpacking fonts-lato (2.0-2.1) {\ldots}
+Selecting previously unselected package poppler-data.
+Preparing to unpack {\ldots}/02-poppler-data\_0.4.11-1\_all.deb {\ldots}
+Unpacking poppler-data (0.4.11-1) {\ldots}
+Selecting previously unselected package tex-common.
+Preparing to unpack {\ldots}/03-tex-common\_6.17\_all.deb {\ldots}
+Unpacking tex-common (6.17) {\ldots}
+Selecting previously unselected package fonts-urw-base35.
+Preparing to unpack {\ldots}/04-fonts-urw-base35\_20200910-1\_all.deb {\ldots}
+Unpacking fonts-urw-base35 (20200910-1) {\ldots}
+Selecting previously unselected package libgs9-common.
+Preparing to unpack {\ldots}/05-libgs9-common\_9.55.0\textasciitilde{}dfsg1-0ubuntu5.6\_all.deb {\ldots}
+Unpacking libgs9-common (9.55.0\textasciitilde{}dfsg1-0ubuntu5.6) {\ldots}
+Selecting previously unselected package libidn12:amd64.
+Preparing to unpack {\ldots}/06-libidn12\_1.38-4ubuntu1\_amd64.deb {\ldots}
+Unpacking libidn12:amd64 (1.38-4ubuntu1) {\ldots}
+Selecting previously unselected package libijs-0.35:amd64.
+Preparing to unpack {\ldots}/07-libijs-0.35\_0.35-15build2\_amd64.deb {\ldots}
+Unpacking libijs-0.35:amd64 (0.35-15build2) {\ldots}
+Selecting previously unselected package libjbig2dec0:amd64.
+Preparing to unpack {\ldots}/08-libjbig2dec0\_0.19-3build2\_amd64.deb {\ldots}
+Unpacking libjbig2dec0:amd64 (0.19-3build2) {\ldots}
+Selecting previously unselected package libgs9:amd64.
+Preparing to unpack {\ldots}/09-libgs9\_9.55.0\textasciitilde{}dfsg1-0ubuntu5.6\_amd64.deb {\ldots}
+Unpacking libgs9:amd64 (9.55.0\textasciitilde{}dfsg1-0ubuntu5.6) {\ldots}
+Selecting previously unselected package libkpathsea6:amd64.
+Preparing to unpack {\ldots}/10-libkpathsea6\_2021.20210626.59705-1ubuntu0.2\_amd64.deb
+{\ldots}
+Unpacking libkpathsea6:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package libwoff1:amd64.
+Preparing to unpack {\ldots}/11-libwoff1\_1.0.2-1build4\_amd64.deb {\ldots}
+Unpacking libwoff1:amd64 (1.0.2-1build4) {\ldots}
+Selecting previously unselected package dvisvgm.
+Preparing to unpack {\ldots}/12-dvisvgm\_2.13.1-1\_amd64.deb {\ldots}
+Unpacking dvisvgm (2.13.1-1) {\ldots}
+Selecting previously unselected package fonts-lmodern.
+Preparing to unpack {\ldots}/13-fonts-lmodern\_2.004.5-6.1\_all.deb {\ldots}
+Unpacking fonts-lmodern (2.004.5-6.1) {\ldots}
+Selecting previously unselected package fonts-noto-mono.
+Preparing to unpack {\ldots}/14-fonts-noto-mono\_20201225-1build1\_all.deb {\ldots}
+Unpacking fonts-noto-mono (20201225-1build1) {\ldots}
+Selecting previously unselected package fonts-texgyre.
+Preparing to unpack {\ldots}/15-fonts-texgyre\_20180621-3.1\_all.deb {\ldots}
+Unpacking fonts-texgyre (20180621-3.1) {\ldots}
+Selecting previously unselected package libapache-pom-java.
+Preparing to unpack {\ldots}/16-libapache-pom-java\_18-1\_all.deb {\ldots}
+Unpacking libapache-pom-java (18-1) {\ldots}
+Selecting previously unselected package libcommons-parent-java.
+Preparing to unpack {\ldots}/17-libcommons-parent-java\_43-1\_all.deb {\ldots}
+Unpacking libcommons-parent-java (43-1) {\ldots}
+Selecting previously unselected package libcommons-logging-java.
+Preparing to unpack {\ldots}/18-libcommons-logging-java\_1.2-2\_all.deb {\ldots}
+Unpacking libcommons-logging-java (1.2-2) {\ldots}
+Selecting previously unselected package libfontenc1:amd64.
+Preparing to unpack {\ldots}/19-libfontenc1\_1\%3a1.1.4-1build3\_amd64.deb {\ldots}
+Unpacking libfontenc1:amd64 (1:1.1.4-1build3) {\ldots}
+Selecting previously unselected package libptexenc1:amd64.
+Preparing to unpack {\ldots}/20-libptexenc1\_2021.20210626.59705-1ubuntu0.2\_amd64.deb
+{\ldots}
+Unpacking libptexenc1:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package rubygems-integration.
+Preparing to unpack {\ldots}/21-rubygems-integration\_1.18\_all.deb {\ldots}
+Unpacking rubygems-integration (1.18) {\ldots}
+Selecting previously unselected package ruby3.0.
+Preparing to unpack {\ldots}/22-ruby3.0\_3.0.2-7ubuntu2.5\_amd64.deb {\ldots}
+Unpacking ruby3.0 (3.0.2-7ubuntu2.5) {\ldots}
+Selecting previously unselected package ruby-rubygems.
+Preparing to unpack {\ldots}/23-ruby-rubygems\_3.3.5-2\_all.deb {\ldots}
+Unpacking ruby-rubygems (3.3.5-2) {\ldots}
+Selecting previously unselected package ruby.
+Preparing to unpack {\ldots}/24-ruby\_1\%3a3.0\textasciitilde{}exp1\_amd64.deb {\ldots}
+Unpacking ruby (1:3.0\textasciitilde{}exp1) {\ldots}
+Selecting previously unselected package rake.
+Preparing to unpack {\ldots}/25-rake\_13.0.6-2\_all.deb {\ldots}
+Unpacking rake (13.0.6-2) {\ldots}
+Selecting previously unselected package ruby-net-telnet.
+Preparing to unpack {\ldots}/26-ruby-net-telnet\_0.1.1-2\_all.deb {\ldots}
+Unpacking ruby-net-telnet (0.1.1-2) {\ldots}
+Selecting previously unselected package ruby-webrick.
+Preparing to unpack {\ldots}/27-ruby-webrick\_1.7.0-3\_all.deb {\ldots}
+Unpacking ruby-webrick (1.7.0-3) {\ldots}
+Selecting previously unselected package ruby-xmlrpc.
+Preparing to unpack {\ldots}/28-ruby-xmlrpc\_0.3.2-1ubuntu0.1\_all.deb {\ldots}
+Unpacking ruby-xmlrpc (0.3.2-1ubuntu0.1) {\ldots}
+Selecting previously unselected package libruby3.0:amd64.
+Preparing to unpack {\ldots}/29-libruby3.0\_3.0.2-7ubuntu2.5\_amd64.deb {\ldots}
+Unpacking libruby3.0:amd64 (3.0.2-7ubuntu2.5) {\ldots}
+Selecting previously unselected package libsynctex2:amd64.
+Preparing to unpack {\ldots}/30-libsynctex2\_2021.20210626.59705-1ubuntu0.2\_amd64.deb
+{\ldots}
+Unpacking libsynctex2:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package libteckit0:amd64.
+Preparing to unpack {\ldots}/31-libteckit0\_2.5.11+ds1-1\_amd64.deb {\ldots}
+Unpacking libteckit0:amd64 (2.5.11+ds1-1) {\ldots}
+Selecting previously unselected package libtexlua53:amd64.
+Preparing to unpack {\ldots}/32-libtexlua53\_2021.20210626.59705-1ubuntu0.2\_amd64.deb
+{\ldots}
+Unpacking libtexlua53:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package libtexluajit2:amd64.
+Preparing to unpack
+{\ldots}/33-libtexluajit2\_2021.20210626.59705-1ubuntu0.2\_amd64.deb {\ldots}
+Unpacking libtexluajit2:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package libzzip-0-13:amd64.
+Preparing to unpack {\ldots}/34-libzzip-0-13\_0.13.72+dfsg.1-1.1\_amd64.deb {\ldots}
+Unpacking libzzip-0-13:amd64 (0.13.72+dfsg.1-1.1) {\ldots}
+Selecting previously unselected package xfonts-encodings.
+Preparing to unpack {\ldots}/35-xfonts-encodings\_1\%3a1.0.5-0ubuntu2\_all.deb {\ldots}
+Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) {\ldots}
+Selecting previously unselected package xfonts-utils.
+Preparing to unpack {\ldots}/36-xfonts-utils\_1\%3a7.7+6build2\_amd64.deb {\ldots}
+Unpacking xfonts-utils (1:7.7+6build2) {\ldots}
+Selecting previously unselected package lmodern.
+Preparing to unpack {\ldots}/37-lmodern\_2.004.5-6.1\_all.deb {\ldots}
+Unpacking lmodern (2.004.5-6.1) {\ldots}
+Selecting previously unselected package preview-latex-style.
+Preparing to unpack {\ldots}/38-preview-latex-style\_12.2-1ubuntu1\_all.deb {\ldots}
+Unpacking preview-latex-style (12.2-1ubuntu1) {\ldots}
+Selecting previously unselected package t1utils.
+Preparing to unpack {\ldots}/39-t1utils\_1.41-4build2\_amd64.deb {\ldots}
+Unpacking t1utils (1.41-4build2) {\ldots}
+Selecting previously unselected package teckit.
+Preparing to unpack {\ldots}/40-teckit\_2.5.11+ds1-1\_amd64.deb {\ldots}
+Unpacking teckit (2.5.11+ds1-1) {\ldots}
+Selecting previously unselected package tex-gyre.
+Preparing to unpack {\ldots}/41-tex-gyre\_20180621-3.1\_all.deb {\ldots}
+Unpacking tex-gyre (20180621-3.1) {\ldots}
+Selecting previously unselected package texlive-binaries.
+Preparing to unpack {\ldots}/42-texlive-
+binaries\_2021.20210626.59705-1ubuntu0.2\_amd64.deb {\ldots}
+Unpacking texlive-binaries (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Selecting previously unselected package texlive-base.
+Preparing to unpack {\ldots}/43-texlive-base\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-base (2021.20220204-1) {\ldots}
+Selecting previously unselected package texlive-fonts-recommended.
+Preparing to unpack {\ldots}/44-texlive-fonts-recommended\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-fonts-recommended (2021.20220204-1) {\ldots}
+Selecting previously unselected package texlive-latex-base.
+Preparing to unpack {\ldots}/45-texlive-latex-base\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-latex-base (2021.20220204-1) {\ldots}
+Selecting previously unselected package libfontbox-java.
+Preparing to unpack {\ldots}/46-libfontbox-java\_1\%3a1.8.16-2\_all.deb {\ldots}
+Unpacking libfontbox-java (1:1.8.16-2) {\ldots}
+Selecting previously unselected package libpdfbox-java.
+Preparing to unpack {\ldots}/47-libpdfbox-java\_1\%3a1.8.16-2\_all.deb {\ldots}
+Unpacking libpdfbox-java (1:1.8.16-2) {\ldots}
+Selecting previously unselected package texlive-latex-recommended.
+Preparing to unpack {\ldots}/48-texlive-latex-recommended\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-latex-recommended (2021.20220204-1) {\ldots}
+Selecting previously unselected package texlive-pictures.
+Preparing to unpack {\ldots}/49-texlive-pictures\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-pictures (2021.20220204-1) {\ldots}
+Selecting previously unselected package texlive-latex-extra.
+Preparing to unpack {\ldots}/50-texlive-latex-extra\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-latex-extra (2021.20220204-1) {\ldots}
+Selecting previously unselected package texlive-plain-generic.
+Preparing to unpack {\ldots}/51-texlive-plain-generic\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-plain-generic (2021.20220204-1) {\ldots}
+Selecting previously unselected package tipa.
+Preparing to unpack {\ldots}/52-tipa\_2\%3a1.3-21\_all.deb {\ldots}
+Unpacking tipa (2:1.3-21) {\ldots}
+Selecting previously unselected package texlive-xetex.
+Preparing to unpack {\ldots}/53-texlive-xetex\_2021.20220204-1\_all.deb {\ldots}
+Unpacking texlive-xetex (2021.20220204-1) {\ldots}
+Setting up fonts-lato (2.0-2.1) {\ldots}
+Setting up fonts-noto-mono (20201225-1build1) {\ldots}
+Setting up libwoff1:amd64 (1.0.2-1build4) {\ldots}
+Setting up libtexlua53:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Setting up libijs-0.35:amd64 (0.35-15build2) {\ldots}
+Setting up libtexluajit2:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Setting up libfontbox-java (1:1.8.16-2) {\ldots}
+Setting up rubygems-integration (1.18) {\ldots}
+Setting up libzzip-0-13:amd64 (0.13.72+dfsg.1-1.1) {\ldots}
+Setting up fonts-urw-base35 (20200910-1) {\ldots}
+Setting up poppler-data (0.4.11-1) {\ldots}
+Setting up tex-common (6.17) {\ldots}
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based
+frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line
+78.)
+debconf: falling back to frontend: Readline
+update-language: texlive-base not installed and configured, doing nothing!
+Setting up libfontenc1:amd64 (1:1.1.4-1build3) {\ldots}
+Setting up libjbig2dec0:amd64 (0.19-3build2) {\ldots}
+Setting up libteckit0:amd64 (2.5.11+ds1-1) {\ldots}
+Setting up libapache-pom-java (18-1) {\ldots}
+Setting up ruby-net-telnet (0.1.1-2) {\ldots}
+Setting up xfonts-encodings (1:1.0.5-0ubuntu2) {\ldots}
+Setting up t1utils (1.41-4build2) {\ldots}
+Setting up libidn12:amd64 (1.38-4ubuntu1) {\ldots}
+Setting up fonts-texgyre (20180621-3.1) {\ldots}
+Setting up libkpathsea6:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Setting up ruby-webrick (1.7.0-3) {\ldots}
+Setting up fonts-lmodern (2.004.5-6.1) {\ldots}
+Setting up fonts-droid-fallback (1:6.0.1r16-1.1build1) {\ldots}
+Setting up ruby-xmlrpc (0.3.2-1ubuntu0.1) {\ldots}
+Setting up libsynctex2:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Setting up libgs9-common (9.55.0\textasciitilde{}dfsg1-0ubuntu5.6) {\ldots}
+Setting up teckit (2.5.11+ds1-1) {\ldots}
+Setting up libpdfbox-java (1:1.8.16-2) {\ldots}
+Setting up libgs9:amd64 (9.55.0\textasciitilde{}dfsg1-0ubuntu5.6) {\ldots}
+Setting up preview-latex-style (12.2-1ubuntu1) {\ldots}
+Setting up libcommons-parent-java (43-1) {\ldots}
+Setting up dvisvgm (2.13.1-1) {\ldots}
+Setting up libcommons-logging-java (1.2-2) {\ldots}
+Setting up xfonts-utils (1:7.7+6build2) {\ldots}
+Setting up libptexenc1:amd64 (2021.20210626.59705-1ubuntu0.2) {\ldots}
+Setting up texlive-binaries (2021.20210626.59705-1ubuntu0.2) {\ldots}
+update-alternatives: using /usr/bin/xdvi-xaw to provide /usr/bin/xdvi.bin
+(xdvi.bin) in auto mode
+update-alternatives: using /usr/bin/bibtex.original to provide /usr/bin/bibtex
+(bibtex) in auto mode
+Setting up lmodern (2.004.5-6.1) {\ldots}
+Setting up texlive-base (2021.20220204-1) {\ldots}
+/usr/bin/ucfr
+/usr/bin/ucfr
+/usr/bin/ucfr
+/usr/bin/ucfr
+mktexlsr: Updating /var/lib/texmf/ls-R-TEXLIVEDIST{\ldots}
+mktexlsr: Updating /var/lib/texmf/ls-R-TEXMFMAIN{\ldots}
+mktexlsr: Updating /var/lib/texmf/ls-R{\ldots}
+mktexlsr: Done.
+tl-paper: setting paper size for dvips to a4:
+/var/lib/texmf/dvips/config/config-paper.ps
+tl-paper: setting paper size for dvipdfmx to a4:
+/var/lib/texmf/dvipdfmx/dvipdfmx-paper.cfg
+tl-paper: setting paper size for xdvi to a4: /var/lib/texmf/xdvi/XDvi-paper
+tl-paper: setting paper size for pdftex to a4: /var/lib/texmf/tex/generic/tex-
+ini-files/pdftexconfig.tex
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based
+frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line
+78.)
+debconf: falling back to frontend: Readline
+Setting up tex-gyre (20180621-3.1) {\ldots}
+Setting up texlive-plain-generic (2021.20220204-1) {\ldots}
+Setting up texlive-latex-base (2021.20220204-1) {\ldots}
+Setting up texlive-latex-recommended (2021.20220204-1) {\ldots}
+Setting up texlive-pictures (2021.20220204-1) {\ldots}
+Setting up texlive-fonts-recommended (2021.20220204-1) {\ldots}
+Setting up tipa (2:1.3-21) {\ldots}
+Setting up texlive-latex-extra (2021.20220204-1) {\ldots}
+Setting up texlive-xetex (2021.20220204-1) {\ldots}
+Setting up rake (13.0.6-2) {\ldots}
+Setting up libruby3.0:amd64 (3.0.2-7ubuntu2.5) {\ldots}
+Setting up ruby3.0 (3.0.2-7ubuntu2.5) {\ldots}
+Setting up ruby (1:3.0\textasciitilde{}exp1) {\ldots}
+Setting up ruby-rubygems (3.3.5-2) {\ldots}
+Processing triggers for man-db (2.10.2-1) {\ldots}
+Processing triggers for fontconfig (2.13.1-4.2ubuntu5) {\ldots}
+Processing triggers for libc-bin (2.35-0ubuntu3.4) {\ldots}
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind\_2\_0.so.3 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind\_2\_5.so.3 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc\_proxy.so.2 is not a symbolic
+link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc.so.2 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbb.so.12 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind.so.3 is not a symbolic link
+
+Processing triggers for tex-common (6.17) {\ldots}
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based
+frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line
+78.)
+debconf: falling back to frontend: Readline
+Running updmap-sys. This may take some time{\ldots} done.
+Running mktexlsr /var/lib/texmf {\ldots} done.
+Building format(s) --all.
+        This may take some time{\ldots} done.
+[NbConvertApp] Converting notebook
+/content/Team\_18\_Final\_Project\_STA142B\_S24.ipynb to pdf
+[NbConvertApp] Support files will be in Team\_18\_Final\_Project\_STA142B\_S24\_files/
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Making directory ./Team\_18\_Final\_Project\_STA142B\_S24\_files
+[NbConvertApp] Writing 93255 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] CRITICAL | xelatex failed: ['xelatex', 'notebook.tex', '-quiet']
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian)
+(preloaded format=xelatex)
+ restricted \textbackslash{}write18 enabled.
+entering extended mode
+(./notebook.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f))))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
+(/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '5.0.2'
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdfcol.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
+(|extractbb --version))))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math.sty
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+No file notebook.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes:
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \textbackslash{}paperwidth=614.295pt
+* \textbackslash{}paperheight=794.96999pt
+* \textbackslash{}textwidth=469.75502pt
+* \textbackslash{}textheight=650.43001pt
+* \textbackslash{}oddsidemargin=0.0pt
+* \textbackslash{}evensidemargin=0.0pt
+* \textbackslash{}topmargin=-37.0pt
+* \textbackslash{}headheight=12.0pt
+* \textbackslash{}headsep=25.0pt
+* \textbackslash{}topskip=11.0pt
+* \textbackslash{}footskip=30.0pt
+* \textbackslash{}marginparwidth=59.0pt
+* \textbackslash{}marginparsep=10.0pt
+* \textbackslash{}columnsep=10.0pt
+* \textbackslash{}skip\textbackslash{}footins=10.0pt plus 4.0pt minus 2.0pt
+* \textbackslash{}hoffset=0.0pt
+* \textbackslash{}voffset=0.0pt
+* \textbackslash{}mag=1000
+* \textbackslash{}@twocolumnfalse
+* \textbackslash{}@twosidefalse
+* \textbackslash{}@mparswitchfalse
+* \textbackslash{}@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+
+LaTeX Warning: No \textbackslash{}author given.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater
+(hyperref)                than one, level fixed on input line 443.
+
+[1]
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.475> not available
+(Font)              size <5> substituted on input line 511.
+
+[2]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 577--578
+
+[3]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 629--630
+
+[4] [5]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 721--722
+
+[6]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 774--775
+
+[7]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 805--806
+
+[8] [9]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 853--854
+
+[10]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 880--881
+
+[11]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 912--913
+
+[12] [13]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1014--1015
+
+
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1019--1020
+
+[14]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1058--1059
+
+[15]
+Missing character: There is no ≤ (U+2264) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ≤ (U+2264) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+! LaTeX Error: \textbackslash{}mathrm allowed only in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ {\ldots}
+
+l.1099   the considered \textbackslash{}(k\textbackslash{}) satisfy \textbackslash{}\$ \textbackslash{}mathrm
+                                                \{Gap\}(k) \textbackslash{}ge \textbackslash{}mathrm\{Gap\}(k +
+?
+! Emergency stop.
+ {\ldots}
+
+l.1099   the considered \textbackslash{}(k\textbackslash{}) satisfy \textbackslash{}\$ \textbackslash{}mathrm
+                                                \{Gap\}(k) \textbackslash{}ge \textbackslash{}mathrm\{Gap\}(k +
+Output written on notebook.pdf (15 pages).
+Transcript written on notebook.log.
+
+Traceback (most recent call last):
+  File "/usr/local/bin/jupyter-nbconvert", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/jupyter\_core/application.py",
+line 283, in launch\_instance
+    super().launch\_instance(argv=argv, **kwargs)
+  File "/usr/local/lib/python3.10/dist-
+packages/traitlets/config/application.py", line 992, in launch\_instance
+    app.start()
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/nbconvertapp.py", line
+423, in start
+    self.convert\_notebooks()
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/nbconvertapp.py", line
+597, in convert\_notebooks
+    self.convert\_single\_notebook(notebook\_filename)
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/nbconvertapp.py", line
+560, in convert\_single\_notebook
+    output, resources = self.export\_single\_notebook(
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/nbconvertapp.py", line
+488, in export\_single\_notebook
+    output, resources = self.exporter.from\_filename(
+  File "/usr/local/lib/python3.10/dist-
+packages/nbconvert/exporters/exporter.py", line 189, in from\_filename
+    return self.from\_file(f, resources=resources, **kw)
+  File "/usr/local/lib/python3.10/dist-
+packages/nbconvert/exporters/exporter.py", line 206, in from\_file
+    return self.from\_notebook\_node(
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/exporters/pdf.py",
+line 194, in from\_notebook\_node
+    self.run\_latex(tex\_file)
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/exporters/pdf.py",
+line 164, in run\_latex
+    return self.run\_command(
+  File "/usr/local/lib/python3.10/dist-packages/nbconvert/exporters/pdf.py",
+line 150, in run\_command
+    raise raise\_on\_failure(
+nbconvert.exporters.pdf.LatexFailed: PDF creating failed, captured latex output:
+Failed to run "['xelatex', 'notebook.tex', '-quiet']" command:
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian)
+(preloaded format=xelatex)
+ restricted \textbackslash{}write18 enabled.
+entering extended mode
+(./notebook.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f))))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
+(/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '5.0.2'
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdfcol.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
+(|extractbb --version))))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math.sty
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+No file notebook.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes:
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \textbackslash{}paperwidth=614.295pt
+* \textbackslash{}paperheight=794.96999pt
+* \textbackslash{}textwidth=469.75502pt
+* \textbackslash{}textheight=650.43001pt
+* \textbackslash{}oddsidemargin=0.0pt
+* \textbackslash{}evensidemargin=0.0pt
+* \textbackslash{}topmargin=-37.0pt
+* \textbackslash{}headheight=12.0pt
+* \textbackslash{}headsep=25.0pt
+* \textbackslash{}topskip=11.0pt
+* \textbackslash{}footskip=30.0pt
+* \textbackslash{}marginparwidth=59.0pt
+* \textbackslash{}marginparsep=10.0pt
+* \textbackslash{}columnsep=10.0pt
+* \textbackslash{}skip\textbackslash{}footins=10.0pt plus 4.0pt minus 2.0pt
+* \textbackslash{}hoffset=0.0pt
+* \textbackslash{}voffset=0.0pt
+* \textbackslash{}mag=1000
+* \textbackslash{}@twocolumnfalse
+* \textbackslash{}@twosidefalse
+* \textbackslash{}@mparswitchfalse
+* \textbackslash{}@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+
+LaTeX Warning: No \textbackslash{}author given.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater
+(hyperref)                than one, level fixed on input line 443.
+
+[1]
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.475> not available
+(Font)              size <5> substituted on input line 511.
+
+[2]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 577--578
+
+[3]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 629--630
+
+[4] [5]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 721--722
+
+[6]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 774--775
+
+[7]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 805--806
+
+[8] [9]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 853--854
+
+[10]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 880--881
+
+[11]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 912--913
+
+[12] [13]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1014--1015
+
+
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1019--1020
+
+[14]
+Underfull \textbackslash{}hbox (badness 10000) in paragraph at lines 1058--1059
+
+[15]
+Missing character: There is no ≤ (U+2264) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ≤ (U+2264) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+! LaTeX Error: \textbackslash{}mathrm allowed only in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ {\ldots}
+
+l.1099   the considered \textbackslash{}(k\textbackslash{}) satisfy \textbackslash{}\$ \textbackslash{}mathrm
+                                                \{Gap\}(k) \textbackslash{}ge \textbackslash{}mathrm\{Gap\}(k +
+?
+! Emergency stop.
+ {\ldots}
+
+l.1099   the considered \textbackslash{}(k\textbackslash{}) satisfy \textbackslash{}\$ \textbackslash{}mathrm
+                                                \{Gap\}(k) \textbackslash{}ge \textbackslash{}mathrm\{Gap\}(k +
+Output written on notebook.pdf (15 pages).
+Transcript written on notebook.log.
+
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
